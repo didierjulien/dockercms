@@ -1,3 +1,4 @@
+## WORDPRESS
 *.log
 wp-config.php
 wp-content/advanced-cache.php
@@ -17,3 +18,9 @@ wp-content/plugins/hello.php
 /sitemap.xml
 /sitemap.xml.gz
 
+## SYSTEM AND NODE
+.DS_Store
+yarn.lock
+node_modules
+/sql/data
+/sql/data.sql

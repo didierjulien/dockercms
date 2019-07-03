@@ -1,0 +1,62 @@
+version: "3.7"
+
+services:
+
+  html:
+    image: didierjulien/phpweb:7.2.19
+    container_name: WP_Local_PHP
+    ports:
+      - "2080:80"
+      - "2443:443"
+    volumes:
+      - ./html:/var/www/html:cached
+      - ./conf/php/php.ini:/usr/local/etc/php/php.ini:cached
+      - ./conf/web/apache2.conf:/etc/apache2/apache2.conf:cached
+      - ./conf/web/000-default.conf:/etc/apache2/sites-available/000-default.conf:cached
+
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: localhost
+      WORDPRESS_DB_USER: dbdata
+      WORDPRESS_DB_PASSWORD: dbdata
+
+  mysql:
+    image: mysql:5.7.26
+    container_name: WP_Local_DB
+    ports:
+      - "2306:3306"
+    volumes:
+      - ./sql/data:/var/lib/mysql:cached
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  adminer:
+    image: adminer
+    container_name: WP_Local_ADMINER
+    restart: always
+    volumes:
+      - ./conf/php/php.ini:/usr/local/etc/php/php.ini:cached
+    ports:
+      - "2386:8080"
+
+  # node:
+  #   image: didierjulien/nodejs:12.5.0
+  #   user: "node"
+  #   container_name: WP_Local_Node
+  #   working_dir: /home/node/app
+  #   environment:
+  #     - NODE_ENV=local
+  #   volumes:
+  #     - ./html/wp-content/themes/custom:/home/node/app:cached
+  #   expose:
+  #     - "8081"
+  #   command: bash -c "yarn install && bower install --allow-root && gulp"
+
+volumes:
+    sql:
+    html:
+    conf:
