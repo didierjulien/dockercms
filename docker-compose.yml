@@ -16,15 +16,15 @@ services:
 
     restart: always
     environment:
-      WORDPRESS_DB_HOST: localhost
+      WORDPRESS_DB_HOST: mysql
       WORDPRESS_DB_USER: dbdata
       WORDPRESS_DB_PASSWORD: dbdata
 
   mysql:
     image: mysql:5.7.26
     container_name: WP_Local_DB
-    ports:
-      - "2306:3306"
+    expose:
+      - "3306"
     volumes:
       - ./sql/data:/var/lib/mysql:cached
     restart: always

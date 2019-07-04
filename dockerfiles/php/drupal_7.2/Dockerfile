@@ -35,7 +35,7 @@ RUN apt-get update \
 && chmod 777 /usr/local/bin/composer \
 && composer global require drush/drush:8.* \
 && ln -s /root/.composer/vendor/bin/drush /usr/local/bin/drush \
-&& openssl req -new -newkey rsa:2048 -nodes -out localhost.csr -keyout localhost.key -subj "/C=CA/ST=Quebec/L=Montreal/O=myself/OU=Montreal/CN=localhost.dev" \
+&& openssl req -new -newkey rsa:2048 -nodes -out localhost.csr -keyout localhost.key -subj "/C=CA/ST=Quebec/L=Montreal/O=myself/OU=Montreal/CN=localhost" \
 && openssl x509 -req -sha256 -days 365 -in localhost.csr -signkey localhost.key -out localhost.crt \
 && mv localhost.* /root \
 && service apache2 restart
