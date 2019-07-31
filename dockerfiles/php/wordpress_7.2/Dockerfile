@@ -1,4 +1,4 @@
-FROM php:7.2.19-apache-stretch
+FROM php:7.2.20-apache-stretch
 
 WORKDIR /var/www/html/
 # CMD [ "php", "./index.php" ]

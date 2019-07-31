@@ -1,4 +1,4 @@
-FROM php:7.3.6-apache-stretch
+FROM php:7.3.7-apache-stretch
 
 ADD addons/ /var/www/addons/
 WORKDIR /var/www/html/
