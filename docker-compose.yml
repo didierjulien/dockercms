@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   html:
-    image: didierjulien/phpweb:7.2.19
+    image: didierjulien/phpweb:7.2
     container_name: WP_Local_PHP
     ports:
       - "2080:80"
@@ -34,17 +34,17 @@ services:
       MYSQL_USER: dbdata
       MYSQL_PASSWORD: dbdata
 
-  adminer:
-    image: adminer
-    container_name: WP_Local_ADMINER
-    restart: always
-    volumes:
-      - ./conf/php/php.ini:/usr/local/etc/php/php.ini:cached
-    ports:
-      - "2386:8080"
+  # adminer:
+  #   image: adminer
+  #   container_name: WP_Local_ADMINER
+  #   restart: always
+  #   volumes:
+  #     - ./conf/php/php.ini:/usr/local/etc/php/php.ini:cached
+  #   ports:
+  #     - "2386:8080"
 
   # node:
-  #   image: didierjulien/nodejs:12.5.0
+  #   image: didierjulien/nodejs:12
   #   user: "node"
   #   container_name: WP_Local_Node
   #   working_dir: /home/node/app
