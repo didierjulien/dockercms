@@ -21,12 +21,12 @@ services:
       WORDPRESS_DB_PASSWORD: dbdata
 
   mysql:
-    image: mysql:5.7.26
+    image: mysql:5.7.27
     container_name: WP_Local_DB
     expose:
       - "3306"
     volumes:
-      - ./sql/data:/var/lib/mysql:cached
+      - ./sql/data:/var/lib/mysql:delegated
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: dbdata
