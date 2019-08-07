@@ -1,4 +1,4 @@
-FROM php:7.2.20-apache-buster
+FROM php:7.2.21-apache-buster
 
 WORKDIR /var/www/html/
 # CMD [ "php", "./index.php" ]
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q\
         pkg-config \
         libmcrypt-dev \
         libpng-dev \
-        mysql-client \
+        default-mysql-client \
         libxml2-dev \
     && docker-php-ext-install -j$(nproc) iconv mbstring zip curl json mysqli pdo_mysql simplexml xml \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
