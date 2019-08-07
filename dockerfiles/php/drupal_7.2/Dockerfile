@@ -1,4 +1,4 @@
-FROM php:7.2.20-apache-stretch
+FROM php:7.2.20-apache-buster
 
 ADD addons/ /var/www/addons/
 WORKDIR /var/www/html/

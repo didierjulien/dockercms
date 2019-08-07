@@ -1,4 +1,4 @@
-FROM php:7.3.7-apache-stretch
+FROM php:7.3.7-apache-buster
 
 WORKDIR /var/www/html/
 # CMD [ "php", "./index.php" ]
