@@ -24,7 +24,7 @@ docker run --name good-wordpress -p 8080:80 -d wordpress
 ```
 Now we're getting somewhere! I can access the site now from localhost:8080 as defined by the modifier "-p". Start up the 5 minute install and let's go!
 
-<img src="https://drive.google.com/open?id=1wIUmVNKCLAnsgecc6dXHB0w0uWXqZkXp"/>
+![Wordpress install](https://i2.wp.com/wordpress.org/support/files/2018/10/install-step3_v47.png)
 
 
 Seems we've hit another snag. I don't know what the database credentials are and there doesn't seem to be any default creds.
@@ -184,6 +184,14 @@ volumes:
 
 - sql/data/ is our database persistence folder. If you want to start over with a fresh site, you can delete everything in data/ but beware!
 
+At the bottom of the yml file, we need to define the volumes used by the stack - usually defined by the top directory.
+```
+volumes:
+    sql:
+    html:
+    conf:
+```
+
 ### 1.3 Caching options for mounted volumes
 These affect the view of the mounted files for the host(your machine) and/or the container. There are 3 possible options:
 - consistent: the default option, this allows the container to view the files in real time with the host. On Linux-based machines, this option works well and does not incur much of a performance penalty. On any other OS however, the FS overlay's overhead will be felt, especially on I/O heavy operations.
@@ -191,3 +199,67 @@ These affect the view of the mounted files for the host(your machine) and/or the
 - cached: updates on the host will be reflected in the container after a delay. Updating a PHP file for example will not have an immediate effect at first but with time, most files will be cached and the changes will happen more quickly. This is ideal when working on non-Linux machines.
 
 - delegated: updates on the container will not be reflected immediately on the host. This is ideal for MySQL since the PHP container interacts with the data in the container and not on your machine; so even if it takes a little while to have the copy on your computer, you're not slowing down the WordPress queries.
+
+### 1.4 Defining Environment Variables
+One of the issues we'll run into by simply running the WordPress container as shown on the docker hub is connecting to the database. The default credentials aren't defined anywhere so the setup cannot continue.   
+On Lines 18-21 and 31-35 we can define the environment variables needed to point our WordPress installation to the Database, and to give that DB the connection credentials we decide.
+```
+environment:
+  WORDPRESS_DB_HOST: mysql
+  WORDPRESS_DB_USER: dbdata
+  WORDPRESS_DB_PASSWORD: dbdata
+
+  ...
+
+environment:
+  MYSQL_ROOT_PASSWORD: dbdata
+  MYSQL_DATABASE: dbdata
+  MYSQL_USER: dbdata
+  MYSQL_PASSWORD: dbdata
+```
+Reference the Docker Hub for both PHP and MySQL for the exhaustive list of support ENV variables.
+
+# 2. Working with the Stack
+### 2.1 Getting started
+Once the repo has been cloned, there is little else to do than to launch docker-compose:
+```
+docker-compose up
+```
+or to run in in the background
+```
+docker-compose up -d
+```
+If you've downloaded the images previously but need the updated version, do
+```
+docker-compose up --force-recreate
+```
+
+The required images will be downloaded and run immediately, PHP takes only a few seconds and MySQL less than 30 usually.   
+By default, the images used are on my Docker Hub, but I encourage building and tagging your own images to maintain a stable working version. I will be regularly updating alongside the official PHP image.
+
+### 2.2 Creating MySQL container
+We have data persistence with the MySQL container but that is only on our local machine. Deleting those files will put the site back to it's default starting state. If we want to capture a snapshot of our database, we can use the Dockerfile located in /sql.
+```
+FROM mysql
+
+ADD data.sql /docker-entrypoint-initdb.d
+```
+Simply export the local database to sql/data.sql. Then from the /sql directory run
+```
+docker build -t your-repository/mysql:[date] .
+```
+for example
+```
+docker build -t didierjulien/mysql:2019.08.08
+```
+Then the image will have to be pushed to your repository
+```
+docker push your-repository/mysql:[date]
+```
+I do __NOT__ recommend pushing database containers to public repositories, hence why I don't do it myself. It's best to keep a local copy or push to a private and secure repo.  
+Once we have this image, we'll need to modify the docker-compose.yml to use it
+```
+mysql:
+  image: your-repository/mysql:[date]
+```
+To test that this worked, we can move all the files out of /sql/data, including hidden ones. Then rebuild the stack. MySQL provisioning should take a little longer as it writes the files to your local machine, but once it's done, you should be able to navigate to your local site and have exactly the same state as the export. 
