@@ -9,7 +9,7 @@ https://hub.docker.com/_/wordpress
 ```
 You can run the official container with this line:
 ```
-docker run --name some-wordpress --network some-network -d wordpress
+docker run --name bad-wordpress --network some-network -d wordpress
 ```
 There is a good chance that didn't work and you instead got fed this error message:  
 "docker: Error response from daemon: network some-network not found."  
@@ -20,7 +20,7 @@ docker run --name some-wordpress -d wordpress
 ```
 Okay, that seemed to work but I don't see my site. To access it you would need to go through the IP docker is using to run on your machine. This is getting awkward... Let's check further on the docker hub.
 ```
-docker run --name good-wordpress -p 8080:80 -d wordpress
+docker run --name good-wordpress -p 8880:80 -d wordpress
 ```
 Now we're getting somewhere! I can access the site now from localhost:8080 as defined by the modifier "-p". Start up the 5 minute install and let's go!
 
@@ -262,4 +262,4 @@ Once we have this image, we'll need to modify the docker-compose.yml to use it
 mysql:
   image: your-repository/mysql:[date]
 ```
-To test that this worked, we can move all the files out of /sql/data, including hidden ones. Then rebuild the stack. MySQL provisioning should take a little longer as it writes the files to your local machine, but once it's done, you should be able to navigate to your local site and have exactly the same state as the export. 
+To test that this worked, we can move all the files out of /sql/data, including hidden ones. Then rebuild the stack. MySQL provisioning should take a little longer as it writes the files to your local machine, but once it's done, you should be able to navigate to your local site and have exactly the same state as the export.
