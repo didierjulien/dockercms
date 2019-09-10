@@ -1,4 +1,4 @@
-FROM php:7.3.8-apache-buster
+FROM php:7.3.9-apache-buster
 
 WORKDIR /var/www/html/
 # CMD [ "php", "./index.php" ]
