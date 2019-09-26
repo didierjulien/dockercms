@@ -1,4 +1,4 @@
-FROM node:12.5.0-alpine
+FROM node:10.16.3-alpine
 
 # Install dependencies
 RUN apk add --quiet --no-cache bash git python make build-base && \
