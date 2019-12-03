@@ -27,6 +27,7 @@ services:
       - "3306"
     volumes:
       - ./sql/data:/var/lib/mysql:delegated
+      - ./conf/mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf:cached
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: dbdata

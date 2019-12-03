@@ -1,0 +1,86 @@
+# The MySQL  Server configuration file.
+#
+# For explanations see
+# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
+
+[mysqld]
+pid-file	= /var/run/mysqld/mysqld.pid
+socket		= /var/run/mysqld/mysqld.sock
+datadir		= /var/lib/mysql
+#log-error	= /var/log/mysql/error.log
+# By default we only accept connections from localhost
+#bind-address	= 127.0.0.1
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+# *** Tuning ***
+#myisam_recover          = BACKUP
+max_connections         = 100
+wait_timeout            = 3600
+interactive_timeout     = 3600
+# nofile is set to 2048 for mysql user in limits.conf
+open_files_limit	= 2048
+table_open_cache	= 1024
+max_allowed_packet	= 16M
+# Max size to which user-created MEMORY tables are permitted to grow
+# Make these equal
+max_heap_table_size     = 256M
+tmp_table_size          = 256M
+
+# *** Fine Tuning ***
+key_buffer_size	 	= 128M
+join_buffer_size 	= 2M
+sort_buffer_size	= 2M
+read_buffer_size 	= 2M
+read_rnd_buffer_size	= 256K
+thread_stack		= 256K
+thread_cache_size       = 8
+
+# *** Query Cache Configuration ***
+query_cache_type	= 1
+query_cache_limit	= 16M
+query_cache_size        = 64M
+
+# *** Logging ***
+# Be aware that this log type is a performance killer
+general_log_file        = /var/log/mysql/mysql.log
+general_log             = 0
+
+#log_slow_queries	= /var/log/mysql/mysql-slow.log
+#long_query_time        = 2
+#log_queries_not_using_indexes
+
+# *** Replication and Binlogs ***
+# Binlogs are not enabled
+server_id		= 1
+#log_bin		= /var/log/mysql/mysql-bin.log
+expire_logs_days	= 7
+max_binlog_size         = 1G
+
+# *** InnoDB ***
+innodb_file_per_table   	= 1
+innodb_flush_method      	= O_DIRECT
+innodb_flush_log_at_trx_commit 	= 1
+innodb_log_file_size     	= 32M
+innodb_buffer_pool_size 	= 1G
+innodb_buffer_pool_instances 	= 8
+innodb_log_buffer_size		= 10M
+innodb_lock_wait_timeout 	= 100
+innodb_data_file_path    	= ibdata1:16M:autoextend:max:4096M
+innodb_io_capacity_max    = 6000
+innodb_io_capacity        = 3000
+
+[mysqldump]
+quick
+quote_names
+max_allowed_packet = 16M
+
+[isamchk]
+key_buffer	= 16M
+
+[client]
+port		= 3306
+socket		= /var/run/mysqld/mysqld.sock
+
+[mysqld_safe]
+socket		= /var/run/mysqld/mysqld.sock
+nice		= 0
