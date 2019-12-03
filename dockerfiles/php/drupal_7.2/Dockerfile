@@ -6,8 +6,7 @@ WORKDIR /var/www/html/
 
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y mysql-client \
-    git \
+    && apt-get install -y git \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libssl-dev \
@@ -17,8 +16,12 @@ RUN apt-get update \
     libpng-dev \
     default-mysql-client \
     libxml2-dev \
+    libzip-dev \
+    libwebp-dev \
+    libpng-dev \
+    libxpm-dev \
 && docker-php-ext-install -j$(nproc) iconv mbstring zip curl json mysqli pdo_mysql simplexml xml \
-&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-gd --with-webp-dir \
 && docker-php-ext-install -j$(nproc) gd \
 && a2enmod proxy \
 && a2enmod proxy_http \
