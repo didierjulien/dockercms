@@ -1,4 +1,4 @@
-FROM php:7.2.22-apache-buster
+FROM php:7.2.25-apache-buster
 
 ADD addons/ /var/www/addons/
 WORKDIR /var/www/html/
